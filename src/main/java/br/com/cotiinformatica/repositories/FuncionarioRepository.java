@@ -1,0 +1,124 @@
+package br.com.cotiinformatica.repositories;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.cotiinformatica.entities.Empresa;
+import br.com.cotiinformatica.entities.Funcionario;
+import br.com.cotiinformatica.factories.ConnectionFactory;
+
+public class FuncionarioRepository {
+
+	public void create(Funcionario funcionario) throws Exception{
+		
+		Connection connection = ConnectionFactory.getConnection();
+		
+		PreparedStatement statement = connection.prepareStatement("insert into funcionario(nome, cpf, matricula, dataAdmissao, idEmpresa) "
+																		+ "values(?, ?, ?, ?, ?)");
+				statement.setString(1, funcionario.getNome());
+				statement.setString(2, funcionario.getCpf());
+				statement.setString(3, funcionario.getMatricula());
+				statement.setDate(4, Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao())));				
+				statement.setInt(5, funcionario.getEmpresa().getIdEmpresa());
+		
+		statement.execute();
+		connection.close();		
+	}
+	
+	public void update(Funcionario funcionario) throws Exception {
+		Connection connection = ConnectionFactory.getConnection();
+		
+		PreparedStatement statement = connection.prepareStatement("update funcionario set nome=?, cpf=?, matricula=?, dataAdmissao=?, idEmpresa=? "
+																	+ "where idFuncionario=?");
+		statement.setString(1, funcionario.getNome());
+		statement.setString(2, funcionario.getCpf());
+		statement.setString(3, funcionario.getMatricula());
+		statement.setDate(4, Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao())));
+		
+		statement.setInt(5, funcionario.getEmpresa().getIdEmpresa());
+		statement.setInt(6, funcionario.getIdFuncionario());
+		statement.execute();
+		connection.close();
+		}
+	
+	public void delete(Integer idFuncionario) throws Exception {
+		Connection connection = ConnectionFactory.getConnection();
+		PreparedStatement statement = connection.prepareStatement("delete from funcionario where idFuncionario = ?");
+		
+		statement.setInt(1, idFuncionario);
+		statement.execute();
+		connection.close();
+		}
+	
+	public List<Funcionario> findAll() throws Exception {
+	
+		Connection connection = ConnectionFactory.getConnection();
+		PreparedStatement statement = connection.prepareStatement("select f.idFuncionario, f.nome, f.cpf, f.matricula,	f.dataAdmissao, "
+																+ " e.idEmpresa, e.nomeFantasia, e.razaoSocial, e.cnpj "		
+																+ " from funcionario f inner join empresa e on e.idEmpresa = f.idEmpresa "
+																+ " order by f.nome ");
+		
+		ResultSet resultSet = statement.executeQuery();
+		
+		List<Funcionario> funcionarios = new ArrayList<Funcionario>(); // criando uma lista de funcionarios vazia
+		
+		while (resultSet.next()) {
+			
+			Funcionario funcionario = new Funcionario();
+			funcionario.setEmpresa(new Empresa());
+			funcionario.setIdFuncionario(resultSet.getInt("idFuncionario"));
+			funcionario.setNome(resultSet.getString("nome"));
+			funcionario.setCpf(resultSet.getString("cpf"));
+			funcionario.setMatricula(resultSet.getString("matricula"));
+			
+			funcionario.setDataAdmissao(new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("dataAdmissao")));
+			funcionario.getEmpresa().setIdEmpresa(resultSet.getInt("idEmpresa"));
+			funcionario.getEmpresa().setNomeFantasia(resultSet.getString("nomeFantasia"));
+			funcionario.getEmpresa().setRazaoSocial(resultSet.getString("razaoSocial"));
+			funcionario.getEmpresa().setCnpj(resultSet.getString("cnpj"));
+			
+			funcionarios.add(funcionario); // adicionando cada obj funcionario retornado pelo resultSet a lista vazia
+		}
+			connection.close();
+			return funcionarios;
+	}
+	
+	public Funcionario findById(Integer idFuncionario) throws Exception {		
+		
+		Connection connection = ConnectionFactory.getConnection();
+		PreparedStatement statement = connection.prepareStatement("select f.idFuncionario, f.nome, f.cpf, f.matricula, f.dataAdmissao, "
+																+ "e.idEmpresa, e.nomeFantasia, e.razaoSocial, e.cnpj"	
+																+ " from funcionario f inner join empresa e "
+																+ "on e.idEmpresa = f.idEmpresa "
+																+ "where f.idFuncionario = ?");
+		
+		statement.setInt(1, idFuncionario);
+		
+		ResultSet resultSet = statement.executeQuery(); 
+		Funcionario funcionario = null;
+		
+		if (resultSet.next()) { // SE O RESULTSET TROUXE ALGUM FUNCIONARIO ENTRA NO BLOCO
+			
+			funcionario = new Funcionario(); // AQUI A GENTE INSTANCIA 1 FUNCIONARIO 
+			funcionario.setEmpresa(new Empresa()); // AQUI A GENTE INSTANCIA A EMPRESA DO FUNCIONARIO QUE TERA SEUS DADOS POPULADOS COM O RETORNO DO RS
+			
+			funcionario.setIdFuncionario(resultSet.getInt("idFuncionario")); 
+			funcionario.setNome(resultSet.getString("nome")); 
+			funcionario.setCpf(resultSet.getString("cpf")); 
+			funcionario.setMatricula(resultSet.getString("matricula")); 
+			funcionario.setDataAdmissao(new SimpleDateFormat("yyyy-MM-dd").parse(resultSet.getString("dataAdmissao")));
+			funcionario.getEmpresa().setIdEmpresa(resultSet.getInt("idEmpresa")); 
+			funcionario.getEmpresa().setNomeFantasia(resultSet.getString("nomeFantasia")); 
+			funcionario.getEmpresa().setRazaoSocial(resultSet.getString("razaoSocial")); 
+			funcionario.getEmpresa().setCnpj(resultSet.getString("cnpj"));
+		}
+			connection.close(); 
+			return funcionario;
+		}
+	
+}
