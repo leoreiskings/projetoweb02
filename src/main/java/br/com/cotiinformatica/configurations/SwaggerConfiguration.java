@@ -29,7 +29,10 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiInfo() {
-				return new ApiInfo("API para controle de empresas e funcionários", "Sistema Spring Boot API / PostGreSQL",	"Versão 1.0", "http://www.cotiinformatica.com.br",
-				new Contact("COTI Informática", "http://www.cotiinformatica.com.br", "contato@cotiinformatica.com.br"), "Licença da API", "http://www.cotiinformatica.com.br", Collections.emptyList());
+				return new ApiInfo("API para controle de empresas e funcionários", 
+									"Sistema Spring Boot API / PostGreSQL",	
+									"Versão 1.0", "http://www.cotiinformatica.com.br",
+				new Contact("COTI Informática", "http://www.cotiinformatica.com.br", "contato@cotiinformatica.com.br"), 
+				"Licença da API", "http://www.cotiinformatica.com.br", Collections.emptyList());
 				}
 }

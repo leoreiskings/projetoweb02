@@ -76,7 +76,7 @@ public class EmpresasController {
 			
 			empresaRepository.delete(idEmpresa);
 			
-			return ResponseEntity.status(HttpStatus.OK).body("Empresa excluida com sucesso.");
+			return ResponseEntity.status(HttpStatus.OK).body("Empresa excluída com sucesso.");
 			
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro: " + e.getMessage());

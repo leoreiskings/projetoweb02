@@ -14,13 +14,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Empresa {
-
-	/*
-	 * private Integer idEmpresa; 
-	 * private String nomeFantasia; 
-	 * private String razaoSocial; private String cnpj;
-	 */
-	
 	
 	private Integer idEmpresa;
     private String nomeFantasia;
