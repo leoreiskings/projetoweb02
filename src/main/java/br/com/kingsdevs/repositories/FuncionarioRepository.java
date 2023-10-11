@@ -1,6 +1,7 @@
 package br.com.kingsdevs.repositories;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -21,7 +22,13 @@ public class FuncionarioRepository {
 		statement.setString(1, funcionario.getNome());
 		statement.setString(2, funcionario.getCpf());
 		statement.setString(3, funcionario.getMatricula());
-		statement.setString(4, new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao()));
+		
+		//linha de código padrao para gravação no Mysql
+		//statement.setString(4, new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao()));
+		
+		statement.setDate(4, Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao()))); 
+		//formato padrão de gravação no PostGreSql
+		
 		statement.setInt(5, funcionario.getEmpresa().getIdEmpresa());
 
 		statement.execute();
@@ -32,13 +39,19 @@ public class FuncionarioRepository {
 	public void update(Funcionario funcionario) throws Exception {
 		
 		Connection connection = ConnectionFactory.getConnection();
-		PreparedStatement statement = connection.prepareStatement("update funcionario set nome=?, cpf=?, matricula=?,dataAdmissao=?, idEmprea=? "
+		PreparedStatement statement = connection.prepareStatement("update funcionario set nome=?, cpf=?, matricula=?, dataAdmissao=?, idEmpresa=? "
 				+ "where idFuncionario=?");
 		
 		statement.setString(1, funcionario.getNome());
 		statement.setString(2, funcionario.getCpf());
-		statement.setString(3, funcionario.getMatricula());
-		statement.setString(4, new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao()));
+		statement.setString(3, funcionario.getMatricula());		
+		
+		//linha de código padrao para gravação no Mysql
+		//statement.setString(4, new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao()));
+		
+		statement.setDate(4, Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(funcionario.getDataAdmissao()))); 
+		//formato padrão de gravação no PostGreSql
+		
 		statement.setInt(5, funcionario.getEmpresa().getIdEmpresa());
 		statement.setInt(6, funcionario.getIdFuncionario());
 		
