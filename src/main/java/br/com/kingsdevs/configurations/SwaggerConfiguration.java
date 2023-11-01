@@ -31,8 +31,10 @@ public class SwaggerConfiguration {
 	
 	private ApiInfo apiInfo() {
 		
-		return new ApiInfo("API para controle de empresas e funcionários", "Sistema Spring Boot API / 	Banco de Dados - PostGreSQL", "Versão 1.0", "http://www.kingsdevs.com.br",	
-				    new Contact("KINGS DEVELOPERS", 	"http://www.kingsdevs.com.br", "contato@kingsdevs.com.br"), "Licença da API", "http://www.kingsdevs.com.br",	 Collections.emptyList());	
+		return new ApiInfo("API para Controle de Empresas e Funcionários", "Sistema Spring Boot API / 	Banco de Dados - PostGreSQL", 
+											"Versão 1.0", "http://www.kingsdevs.com.br",	
+				    new Contact("KINGS DEVELOPERS LTDA", 	"http://www.kingsdevs.com.br", "contato@kingsdevs.com.br"), 
+				    						"Licença da API", "http://www.kingsdevs.com.br",	 Collections.emptyList());	
 	}
 	
 }

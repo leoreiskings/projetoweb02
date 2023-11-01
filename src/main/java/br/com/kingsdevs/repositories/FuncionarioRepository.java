@@ -71,7 +71,9 @@ public class FuncionarioRepository {
 
 	public List<Funcionario> findAll() throws Exception {
 		Connection connection = ConnectionFactory.getConnection();
-		PreparedStatement statement = connection.prepareStatement("select f.idFuncionario, f.nome, f.cpf, f.matricula,	f.dataAdmissao, e.idEmpresa, e.nomeFantasia,	e.razaoSocial, e.cnpj from funcionario f inner join empresa e	on e.idEmpresa = f.idEmpresa order by f.nome");
+		PreparedStatement statement = connection.prepareStatement("select f.idFuncionario, f.nome, f.cpf, f.matricula,	f.dataAdmissao, "
+																															+ " e.idEmpresa, e.nomeFantasia, e.razaoSocial, e.cnpj "
+																															+ " from funcionario f inner join empresa e	on e.idEmpresa = f.idEmpresa order by f.nome");
 		ResultSet resultSet = statement.executeQuery();
 		
 		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
